@@ -25,7 +25,7 @@ const HomeIntro = () => {
         </p>
 
         <p className={typo({ variant: "paragraph", font: "sans" })}>
-          Sort by newest, oldest, or hit <span className="text-white">random</span> and see what
+          Sort by newest, oldest, or hit <span className="text-white">random </span> and see what
           turns up — or search by title or username if you already know who you&apos;re looking for.
           Every rice links back to the original Reddit post and a{" "}
           <span className="text-white">GitHub dotfiles repo you can clone</span>.

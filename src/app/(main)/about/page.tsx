@@ -6,7 +6,7 @@ export const metadata: ReturnType<typeof getSEOTags> = getSEOTags({
   canonicalUrlRelative: "/about",
 });
 
-const CONTRIBUTING_URL = "https://github.com/0xN1nja/awesome-dotfiles/blob/main/CONTRIBUTING.md";
+const CONTRIBUTING_URL = "https://github.com/0xN1nja/awesome-dotfiles/blob/master/CONTRIBUTING.md";
 
 const AboutPage = () => {
   return (

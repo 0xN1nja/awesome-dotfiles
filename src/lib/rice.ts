@@ -54,7 +54,7 @@ function loadGithubSubmissions(): RiceDetail[] {
           utils_used: rice.utils_used ?? [],
           created_utc: Math.floor(Date.now() / 1000),
           source: "github",
-          source_url: `https://github.com/0xN1nja/awesome-dotfiles/blob/main/data/github/${f}`,
+          source_url: `https://github.com/0xN1nja/awesome-dotfiles/blob/master/data/github/${f}`,
         }),
       );
     });
