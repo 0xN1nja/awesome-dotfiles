@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import { ExternalLink } from "lucide-react";
 import React, { Dispatch, SetStateAction } from "react";
 import { NavType } from "./_nav-mock";
 import { usePathname } from "next/navigation";
@@ -9,6 +10,7 @@ import { motion } from "framer-motion";
 const NavItem: React.FC<NavType[0] & { setOpen?: Dispatch<SetStateAction<boolean>> }> = ({
   label,
   path,
+  external,
   setOpen,
 }) => {
   const pathname = usePathname();
@@ -30,14 +32,27 @@ const NavItem: React.FC<NavType[0] & { setOpen?: Dispatch<SetStateAction<boolean
       )}
       onClick={onClickHandler}
     >
-      <Link
-        href={path}
-        role="link"
-        aria-label={label}
-        className="el-focus-styles relative z-10 rounded-sm text-lg sm:text-base"
-      >
-        {label}
-      </Link>
+      {external ? (
+        <a
+          href={path}
+          target="_blank"
+          rel="noopener noreferrer external"
+          aria-label={label}
+          className="el-focus-styles relative z-10 flex items-center gap-1.5 rounded-sm text-lg sm:text-base"
+        >
+          {label}
+          <ExternalLink className="size-3.5" aria-hidden="true" />
+        </a>
+      ) : (
+        <Link
+          href={path}
+          role="link"
+          aria-label={label}
+          className="el-focus-styles relative z-10 rounded-sm text-lg sm:text-base"
+        >
+          {label}
+        </Link>
+      )}
 
       {pathname === path && (
         <motion.span
