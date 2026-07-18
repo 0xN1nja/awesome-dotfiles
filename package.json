@@ -1,0 +1,57 @@
+{
+  "name": "awesome-dotfiles",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build && find .next/static -name '*.map' -delete",
+    "start": "next start",
+    "lint": "eslint .",
+    "format": "oxfmt --write src"
+  },
+  "dependencies": {
+    "@paralleldrive/cuid2": "^3.3.0",
+    "@radix-ui/react-checkbox": "^1.3.3",
+    "@radix-ui/react-dialog": "^1.1.15",
+    "@radix-ui/react-popover": "^1.1.15",
+    "@radix-ui/react-slot": "^1.2.4",
+    "@radix-ui/react-tooltip": "^1.2.8",
+    "@radix-ui/react-visually-hidden": "^1.2.4",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "framer-motion": "^12.40.0",
+    "lucide-react": "^1.16.0",
+    "next": "16.2.7",
+    "next-nprogress-bar": "^2.4.7",
+    "react": "19.2.7",
+    "react-dom": "19.2.7",
+    "react-icons": "^5.6.0",
+    "rss": "^1.2.2",
+    "sharp": "0.34.5",
+    "tailwind-merge": "^3.6.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.3.0",
+    "@tailwindcss/typography": "^0.5.19",
+    "@types/node": "^25.9.1",
+    "@types/react": "^19.2.15",
+    "@types/react-dom": "^19.2.3",
+    "@types/rss": "^0.0.32",
+    "eslint": "^9.39.5",
+    "eslint-config-next": "16.2.7",
+    "eslint-config-prettier": "^10.1.8",
+    "oxfmt": "^0.59.0",
+    "postcss": "^8.5.15",
+    "tailwindcss": "^4.3.0",
+    "tw-animate-css": "^1.4.0",
+    "typescript": "^6.0.3"
+  },
+  "resolutions": {
+    "esbuild": "0.27.3"
+  },
+  "trustedDependencies": [
+    "esbuild",
+    "sharp",
+    "unrs-resolver"
+  ]
+}

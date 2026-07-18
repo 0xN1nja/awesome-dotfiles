@@ -1,0 +1,30 @@
+[
+  {
+    "title": "bspwm rice with Polybar, eww widgets, and Rofi",
+    "author": "0xN1nja",
+    "preview_image": "https://raw.githubusercontent.com/0xN1nja/dotfiles/master/screenshots/1.png",
+    "gallery_images": [
+      "https://raw.githubusercontent.com/0xN1nja/dotfiles/master/screenshots/1.png",
+      "https://raw.githubusercontent.com/0xN1nja/dotfiles/master/screenshots/2.png",
+      "https://raw.githubusercontent.com/0xN1nja/dotfiles/master/screenshots/3.png"
+    ],
+    "github_url": "https://github.com/0xN1nja/dotfiles",
+    "wm": "bspwm",
+    "distro": "Arch Linux",
+    "utils_used": [
+      "Polybar",
+      "Alacritty",
+      "kitty",
+      "Rofi",
+      "eww",
+      "ncmpcpp",
+      "Neovim",
+      "Geany",
+      "Yazi",
+      "Thunar",
+      "Zsh",
+      "picom",
+      "Dunst"
+    ]
+  }
+]

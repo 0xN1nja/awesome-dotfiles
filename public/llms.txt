@@ -1,0 +1,24 @@
+# awesome-dotfiles
+
+> awesome-dotfiles is a browsable, filterable gallery of dotfiles ("rices") sourced from r/unixporn on Reddit, plus community GitHub submissions. Reddit has no way to filter posts by distro, window manager/DE, or colorscheme — this site exists to solve that.
+
+## What it does
+
+- Browse thousands of dotfile showcases with image galleries.
+- Filter by Distro, DE/WM, Colorscheme, and Tools used.
+- Search by post title or username.
+- Sort by newest, oldest, or random.
+
+## Site
+
+- Site: https://dotfiles.lol
+- GitHub: https://github.com/0xN1nja
+
+## Maintainer
+
+Built and maintained by Abhimanyu Sharma (0xN1nja).
+
+## Contributing
+
+- Submission: open a PR on the GitHub repo, adding a JSON file at `data/github/<github-username>.json`. See CONTRIBUTING.md for the template.
+- Removal requests: open a PR on the GitHub repo.
