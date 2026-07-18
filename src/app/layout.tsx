@@ -1,4 +1,5 @@
 import Script from "next/script";
+import { Analytics } from "@vercel/analytics/next";
 import { fontMono, fontSans, fontSerif } from "~/components/ui/fonts";
 import { getSEOTags, renderSchemaTags } from "~/lib/seo";
 import { cn } from "~/lib/utils";
@@ -44,6 +45,7 @@ export default function RootLayout({
         {renderSchemaTags()}
 
         <RootProviders>{children}</RootProviders>
+        <Analytics />
       </body>
       <Script src="https://scripts.simpleanalyticscdn.com/latest.js" />
     </html>
