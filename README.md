@@ -2,6 +2,8 @@
 
 4000+ unique rices scraped from r/unixporn. Filter by distro, window manager, colorscheme, or utils used. Finding the perfect rice has never felt easier.
 
+<img width="1140" height="770" alt="preview" src="https://github.com/user-attachments/assets/bd5611df-e8bf-404b-91ce-6dc611b456b2" />
+
 ## Features
 
 - Filter by distro, window manager/DE, colorscheme, or tools used
