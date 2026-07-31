@@ -17,11 +17,39 @@ import RiceSearch from "./rice-search";
 import RiceSort, { type SortMode } from "./rice-sort";
 
 const PAGE_SIZE = 24;
+const STORAGE_KEY = "rice-list-state";
+const PERSISTENCE_ENABLED = process.env.NODE_ENV === "production";
 
 interface RiceListProps {
   cards: RiceCardType[];
   filterMeta?: FilterMeta;
   filterIndex?: FilterIndex;
+}
+
+interface PersistedState {
+  search: string;
+  filters: Record<FilterKey, string[]>;
+  selectedSources: RiceSource[];
+  sortMode: SortMode;
+  page: number;
+  randomOrderIds: string[];
+}
+
+function readPersistedState(): PersistedState | null {
+  if (!PERSISTENCE_ENABLED) return null;
+  try {
+    const raw = sessionStorage.getItem(STORAGE_KEY);
+    return raw ? (JSON.parse(raw) as PersistedState) : null;
+  } catch {
+    return null;
+  }
+}
+
+function persistState(state: PersistedState) {
+  if (!PERSISTENCE_ENABLED) return;
+  try {
+    sessionStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  } catch {}
 }
 
 function matchesSearch(rice: RiceCardType, query: string) {
@@ -58,8 +86,36 @@ const RiceList = ({ cards, filterMeta, filterIndex }: RiceListProps) => {
   const [page, setPage] = useState(1);
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setRandomOrder(shuffle(cards));
+    const restored = readPersistedState();
+
+    /* eslint-disable react-hooks/set-state-in-effect */
+    if (restored) {
+      const byId = new Map(cards.map((c) => [c.id, c]));
+      const restoredOrder = restored.randomOrderIds
+        .map((id) => byId.get(id))
+        .filter((c): c is RiceCardType => Boolean(c));
+      const knownIds = new Set(restoredOrder.map((c) => c.id));
+      const newCards = cards.filter((c) => !knownIds.has(c.id));
+
+      setSearch(restored.search);
+      setFilters(restored.filters);
+      setSelectedSources(restored.selectedSources);
+      setSortMode(restored.sortMode);
+      setPage(restored.page);
+      setRandomOrder([...restoredOrder, ...newCards]);
+    } else {
+      const order = shuffle(cards);
+      setRandomOrder(order);
+      persistState({
+        search: "",
+        filters: EMPTY_FILTERS,
+        selectedSources: [],
+        sortMode: "random",
+        page: 1,
+        randomOrderIds: order.map((c) => c.id),
+      });
+    }
+    /* eslint-enable react-hooks/set-state-in-effect */
   }, [cards]);
 
   const filterIdSets = useMemo(
@@ -93,37 +149,64 @@ const RiceList = ({ cards, filterMeta, filterIndex }: RiceListProps) => {
   const clampedPage = Math.min(page, totalPages);
   const pageItems = displayList.slice((clampedPage - 1) * PAGE_SIZE, clampedPage * PAGE_SIZE);
 
+  const persistPartial = (overrides: Partial<PersistedState>) => {
+    persistState({
+      search,
+      filters,
+      selectedSources,
+      sortMode,
+      page,
+      randomOrderIds: randomOrder.map((c) => c.id),
+      ...overrides,
+    });
+  };
+
   const handleSearchChange = (value: string) => {
     setSearch(value);
     setPage(1);
+    persistPartial({ search: value, page: 1 });
   };
 
   const handleSortChange = (mode: SortMode) => {
-    if (mode === "random") setRandomOrder(shuffle(cards));
+    const order = mode === "random" ? shuffle(cards) : randomOrder;
+    if (mode === "random") setRandomOrder(order);
     setSortMode(mode);
     setPage(1);
+    persistPartial({ sortMode: mode, page: 1, randomOrderIds: order.map((c) => c.id) });
   };
 
   const handleFilterToggle = (key: FilterKey, value: string) => {
-    setFilters((prev) => {
-      const active = prev[key];
-      const next = active.includes(value) ? active.filter((v) => v !== value) : [...active, value];
-      return { ...prev, [key]: next };
-    });
+    const active = filters[key];
+    const nextValues = active.includes(value)
+      ? active.filter((v) => v !== value)
+      : [...active, value];
+    const nextFilters = { ...filters, [key]: nextValues };
+
+    setFilters(nextFilters);
     setPage(1);
+    persistPartial({ filters: nextFilters, page: 1 });
   };
 
   const handleSourceToggle = (value: RiceSource) => {
-    setSelectedSources((prev) =>
-      prev.includes(value) ? prev.filter((v) => v !== value) : [...prev, value],
-    );
+    const nextSources = selectedSources.includes(value)
+      ? selectedSources.filter((v) => v !== value)
+      : [...selectedSources, value];
+
+    setSelectedSources(nextSources);
     setPage(1);
+    persistPartial({ selectedSources: nextSources, page: 1 });
   };
 
   const handleClearFilters = () => {
     setFilters(EMPTY_FILTERS);
     setSelectedSources([]);
     setPage(1);
+    persistPartial({ filters: EMPTY_FILTERS, selectedSources: [], page: 1 });
+  };
+
+  const handlePageChange = (newPage: number) => {
+    setPage(newPage);
+    persistPartial({ page: newPage });
   };
 
   const hasActiveFilters =
@@ -167,7 +250,7 @@ const RiceList = ({ cards, filterMeta, filterIndex }: RiceListProps) => {
         </ul>
       )}
 
-      <RicePagination page={clampedPage} totalPages={totalPages} onPageChange={setPage} />
+      <RicePagination page={clampedPage} totalPages={totalPages} onPageChange={handlePageChange} />
     </div>
   );
 };
