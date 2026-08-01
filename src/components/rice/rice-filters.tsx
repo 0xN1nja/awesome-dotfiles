@@ -1,10 +1,12 @@
 "use client";
 
+import { useState } from "react";
 import { ChevronDown, X } from "lucide-react";
 import { Button } from "~/components/ui/button";
 import { Checkbox } from "~/components/ui/checkbox";
+import { Input } from "~/components/ui/input";
 import { Popover, PopoverContent, PopoverTrigger } from "~/components/ui/popover";
-import type { FilterMeta, RiceSource } from "~/lib/rice-shared";
+import type { FilterMeta, FilterOption, RiceSource } from "~/lib/rice-shared";
 
 export type FilterKey = "distro" | "wm" | "colorscheme" | "utils_used";
 
@@ -51,9 +53,63 @@ const FilterDropdown = ({ label, activeCount, children }: FilterDropdownProps) =
       </Button>
     </PopoverTrigger>
 
-    <PopoverContent className="max-h-72 overflow-y-auto">{children}</PopoverContent>
+    <PopoverContent onOpenAutoFocus={(e) => e.preventDefault()}>{children}</PopoverContent>
   </Popover>
 );
+
+interface FilterOptionListProps {
+  label: string;
+  options: FilterOption[];
+  selected: string[];
+  onToggle: (value: string) => void;
+}
+
+const FilterOptionList = ({ label, options, selected, onToggle }: FilterOptionListProps) => {
+  const [query, setQuery] = useState("");
+  const needle = query.trim().toLowerCase();
+  const filteredOptions = needle
+    ? options.filter((option) => option.value.toLowerCase().includes(needle))
+    : options;
+
+  return (
+    <div className="space-y-2">
+      <Input
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
+        placeholder={`Search ${label.toLowerCase()}...`}
+        className="h-8"
+      />
+
+      <ul role="list" className="max-h-56 space-y-0.5 overflow-y-auto">
+        {filteredOptions.length > 0 ? (
+          filteredOptions.map((option) => {
+            const id = `${label}-${option.value}`;
+            const checked = selected.includes(option.value);
+
+            return (
+              <li key={option.value}>
+                <label
+                  htmlFor={id}
+                  className="flex cursor-pointer items-center gap-2 rounded-sm px-1.5 py-1 text-sm normal-case hover:bg-accent"
+                >
+                  <Checkbox
+                    id={id}
+                    checked={checked}
+                    onCheckedChange={() => onToggle(option.value)}
+                  />
+                  <span className="flex-1 truncate">{option.value}</span>
+                  <span className="text-xs text-muted-foreground">{option.count}</span>
+                </label>
+              </li>
+            );
+          })
+        ) : (
+          <li className="px-1.5 py-2 text-sm text-muted-foreground">No matches</li>
+        )}
+      </ul>
+    </div>
+  );
+};
 
 interface RiceFiltersProps {
   filterMeta: FilterMeta;
@@ -78,37 +134,16 @@ const RiceFilters = ({
 }: RiceFiltersProps) => {
   return (
     <div className="flex flex-wrap items-center gap-2">
-      {FILTER_ORDER.map((key) => {
-        const options = filterMeta[key];
-
-        return (
-          <FilterDropdown key={key} label={FILTER_LABELS[key]} activeCount={selected[key].length}>
-            <ul role="list" className="space-y-0.5">
-              {options.map((option) => {
-                const id = `${key}-${option.value}`;
-                const checked = selected[key].includes(option.value);
-
-                return (
-                  <li key={option.value}>
-                    <label
-                      htmlFor={id}
-                      className="flex cursor-pointer items-center gap-2 rounded-sm px-1.5 py-1 text-sm normal-case hover:bg-accent"
-                    >
-                      <Checkbox
-                        id={id}
-                        checked={checked}
-                        onCheckedChange={() => onToggle(key, option.value)}
-                      />
-                      <span className="flex-1 truncate">{option.value}</span>
-                      <span className="text-xs text-muted-foreground">{option.count}</span>
-                    </label>
-                  </li>
-                );
-              })}
-            </ul>
-          </FilterDropdown>
-        );
-      })}
+      {FILTER_ORDER.map((key) => (
+        <FilterDropdown key={key} label={FILTER_LABELS[key]} activeCount={selected[key].length}>
+          <FilterOptionList
+            label={FILTER_LABELS[key]}
+            options={filterMeta[key]}
+            selected={selected[key]}
+            onToggle={(value) => onToggle(key, value)}
+          />
+        </FilterDropdown>
+      ))}
 
       <FilterDropdown label="Source" activeCount={selectedSources.length}>
         <ul role="list" className="space-y-0.5">
