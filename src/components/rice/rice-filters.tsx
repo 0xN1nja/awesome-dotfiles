@@ -67,9 +67,30 @@ interface FilterOptionListProps {
 const FilterOptionList = ({ label, options, selected, onToggle }: FilterOptionListProps) => {
   const [query, setQuery] = useState("");
   const needle = query.trim().toLowerCase();
-  const filteredOptions = needle
-    ? options.filter((option) => option.value.toLowerCase().includes(needle))
-    : options;
+
+  const selectedOptions = options.filter((option) => selected.includes(option.value));
+  const unselectedOptions = options.filter((option) => !selected.includes(option.value));
+  const matchingUnselected = needle
+    ? unselectedOptions.filter((option) => option.value.toLowerCase().includes(needle))
+    : unselectedOptions;
+
+  const renderOption = (option: FilterOption) => {
+    const id = `${label}-${option.value}`;
+    const checked = selected.includes(option.value);
+
+    return (
+      <li key={option.value}>
+        <label
+          htmlFor={id}
+          className="flex cursor-pointer items-center gap-2 rounded-sm px-1.5 py-1 text-sm normal-case hover:bg-accent"
+        >
+          <Checkbox id={id} checked={checked} onCheckedChange={() => onToggle(option.value)} />
+          <span className="flex-1 truncate">{option.value}</span>
+          <span className="text-xs text-muted-foreground">{option.count}</span>
+        </label>
+      </li>
+    );
+  };
 
   return (
     <div className="space-y-2">
@@ -81,31 +102,17 @@ const FilterOptionList = ({ label, options, selected, onToggle }: FilterOptionLi
       />
 
       <ul role="list" className="max-h-56 space-y-0.5 overflow-y-auto">
-        {filteredOptions.length > 0 ? (
-          filteredOptions.map((option) => {
-            const id = `${label}-${option.value}`;
-            const checked = selected.includes(option.value);
+        {selectedOptions.map(renderOption)}
 
-            return (
-              <li key={option.value}>
-                <label
-                  htmlFor={id}
-                  className="flex cursor-pointer items-center gap-2 rounded-sm px-1.5 py-1 text-sm normal-case hover:bg-accent"
-                >
-                  <Checkbox
-                    id={id}
-                    checked={checked}
-                    onCheckedChange={() => onToggle(option.value)}
-                  />
-                  <span className="flex-1 truncate">{option.value}</span>
-                  <span className="text-xs text-muted-foreground">{option.count}</span>
-                </label>
-              </li>
-            );
-          })
-        ) : (
-          <li className="px-1.5 py-2 text-sm text-muted-foreground">No matches</li>
+        {selectedOptions.length > 0 && matchingUnselected.length > 0 && (
+          <li role="presentation" className="my-1 border-t" />
         )}
+
+        {matchingUnselected.length > 0
+          ? matchingUnselected.map(renderOption)
+          : selectedOptions.length === 0 && (
+              <li className="px-1.5 py-2 text-sm text-muted-foreground">No matches</li>
+            )}
       </ul>
     </div>
   );
