@@ -2,6 +2,7 @@
   "name": "awesome-dotfiles",
   "version": "0.1.0",
   "private": true,
+  "license": "MIT",
   "scripts": {
     "dev": "next dev",
     "build": "next build && find out -type f -name '__next.*.txt' -delete",
