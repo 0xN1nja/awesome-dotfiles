@@ -6,16 +6,26 @@ export const getSEOTags = ({
   title,
   description,
   keywords,
-  openGraph,
+  images,
   canonicalUrlRelative,
   extraTags,
-}: Metadata & {
+}: {
+  title?: string;
+  description?: string;
+  keywords?: string[];
+  images?: string[];
   canonicalUrlRelative?: string;
   extraTags?: Record<string, unknown>;
-} = {}) => {
+} = {}): Metadata => {
+  const resolvedTitle = title || config.appName;
+  const resolvedDescription = description || config.appDescription;
+  const url = canonicalUrlRelative
+    ? `https://${config.domainName}${canonicalUrlRelative}`
+    : `https://${config.domainName}/`;
+
   return {
-    title: title || config.appName,
-    description: description || config.appDescription,
+    title: resolvedTitle,
+    description: resolvedDescription,
     keywords: keywords || [
       "dotfiles",
       "rice",
@@ -35,18 +45,20 @@ export const getSEOTags = ({
     ),
 
     openGraph: {
-      title: openGraph?.title || config.appName,
-      description: openGraph?.description || config.appDescription,
-      url: openGraph?.url || `https://${config.domainName}/`,
-      siteName: openGraph?.title || config.appName,
+      title: resolvedTitle,
+      description: resolvedDescription,
+      url,
+      siteName: config.appName,
       locale: "en_US",
       type: "website",
+      ...(images && images.length > 0 && { images }),
     },
 
     twitter: {
-      title: openGraph?.title || config.appName,
-      description: openGraph?.description || config.appDescription,
+      title: resolvedTitle,
+      description: resolvedDescription,
       card: "summary_large_image",
+      ...(images && images.length > 0 && { images }),
     },
 
     ...(canonicalUrlRelative && {

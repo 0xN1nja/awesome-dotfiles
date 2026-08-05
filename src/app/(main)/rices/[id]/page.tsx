@@ -23,10 +23,13 @@ export async function generateMetadata({ params }: RiceDetailPageParams) {
   const rice = getRiceDetail(id);
   if (!rice) return getSEOTags();
 
+  const images = resolveRiceImages(rice);
+
   return getSEOTags({
     title: rice.title,
     description: `${rice.title} by ${rice.author}`,
     canonicalUrlRelative: `/rices/${rice.id}`,
+    images: images.slice(0, 1),
   });
 }
 
