@@ -24,10 +24,11 @@ export async function generateMetadata({ params }: RiceDetailPageParams) {
   if (!rice) return getSEOTags();
 
   const images = resolveRiceImages(rice);
+  const authorLabel = rice.source === "reddit" ? `u/${rice.author}` : rice.author;
 
   return getSEOTags({
     title: rice.title,
-    description: `${rice.title} by ${rice.author}`,
+    description: `by ${authorLabel}`,
     canonicalUrlRelative: `/rices/${rice.id}`,
     images: images.slice(0, 1),
   });
