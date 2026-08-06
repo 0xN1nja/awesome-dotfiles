@@ -209,6 +209,26 @@ const RiceList = ({ cards, filterMeta, filterIndex }: RiceListProps) => {
     persistPartial({ page: newPage });
   };
 
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.metaKey || event.ctrlKey || event.altKey) return;
+
+      const target = event.target as HTMLElement | null;
+      const tag = target?.tagName;
+      if (tag === "INPUT" || tag === "TEXTAREA" || target?.isContentEditable) return;
+
+      if (event.key === "n" && clampedPage < totalPages) {
+        handlePageChange(clampedPage + 1);
+      } else if (event.key === "p" && clampedPage > 1) {
+        handlePageChange(clampedPage - 1);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [clampedPage, totalPages]);
+
   const hasActiveFilters =
     selectedSources.length > 0 || Object.values(filters).some((values) => values.length > 0);
 
