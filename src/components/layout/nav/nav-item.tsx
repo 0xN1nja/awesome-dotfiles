@@ -24,12 +24,9 @@ const NavItem: React.FC<NavType[0] & { setOpen?: Dispatch<SetStateAction<boolean
   return (
     <li
       role="listitem"
-      className={cn(
-        "relative flex h-10 items-center rounded-md px-3 font-medium transition-colors duration-300 sm:h-7 sm:px-0",
-        {
-          "bg-muted sm:bg-transparent sm:text-ring": pathname === path,
-        },
-      )}
+      className={cn("relative rounded-md transition-colors duration-300", {
+        "bg-muted sm:bg-transparent sm:text-ring": pathname === path,
+      })}
       onClick={onClickHandler}
     >
       {external ? (
@@ -38,7 +35,7 @@ const NavItem: React.FC<NavType[0] & { setOpen?: Dispatch<SetStateAction<boolean
           target="_blank"
           rel="noopener noreferrer external"
           aria-label={label}
-          className="el-focus-styles relative z-10 flex items-center gap-1.5 rounded-sm text-lg sm:text-base"
+          className="el-focus-styles relative z-10 flex h-10 items-center gap-1.5 rounded-sm px-3 text-lg font-medium sm:h-7 sm:px-0 sm:text-base"
         >
           {label}
           <ExternalLink className="size-3.5" aria-hidden="true" />
@@ -49,7 +46,7 @@ const NavItem: React.FC<NavType[0] & { setOpen?: Dispatch<SetStateAction<boolean
           prefetch={false}
           role="link"
           aria-label={label}
-          className="el-focus-styles relative z-10 rounded-sm text-lg sm:text-base"
+          className="el-focus-styles relative z-10 flex h-10 items-center rounded-sm px-3 text-lg font-medium sm:h-7 sm:px-0 sm:text-base"
         >
           {label}
         </Link>
