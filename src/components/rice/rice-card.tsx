@@ -9,9 +9,10 @@ import ToolsList from "./tools-list";
 interface RiceCardProps {
   rice: RiceCardType;
   priority?: boolean;
+  showImage?: boolean;
 }
 
-const RiceCard = ({ rice, priority = false }: RiceCardProps) => {
+const RiceCard = ({ rice, priority = false, showImage = true }: RiceCardProps) => {
   const href = `/rices/${rice.id}`;
   const images = resolveRiceImages(rice);
 
@@ -26,7 +27,7 @@ const RiceCard = ({ rice, priority = false }: RiceCardProps) => {
             tabIndex={-1}
             className="absolute inset-0"
           >
-            <Carousel images={images} alt={rice.title} priority={priority} />
+            {showImage && <Carousel images={images} alt={rice.title} priority={priority} />}
           </Link>
           <Chips wm={rice.wm} distro={rice.distro} colorscheme={rice.colorscheme} />
         </div>

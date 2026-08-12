@@ -15,6 +15,7 @@ interface CarouselProps {
 
 const Carousel = ({ images, alt, size = "card", priority, className }: CarouselProps) => {
   const [index, setIndex] = useState(0);
+  const [revealed, setRevealed] = useState<number[]>([0]);
   const total = images.length;
 
   if (total === 0) {
@@ -32,10 +33,23 @@ const Carousel = ({ images, alt, size = "card", priority, className }: CarouselP
 
   const showChrome = total > 1;
 
+  const reveal = (...targets: number[]) => {
+    setRevealed((prev) => {
+      const next = [...prev];
+      targets.forEach((target) => {
+        const normalized = ((target % total) + total) % total;
+        if (!next.includes(normalized)) next.push(normalized);
+      });
+      return next.length === prev.length ? prev : next;
+    });
+  };
+
   const goTo = (event: React.MouseEvent, next: number) => {
     event.preventDefault();
     event.stopPropagation();
-    setIndex(((next % total) + total) % total);
+    const target = ((next % total) + total) % total;
+    setIndex(target);
+    reveal(target, target - 1, target + 1);
   };
 
   const sizes =
@@ -44,22 +58,27 @@ const Carousel = ({ images, alt, size = "card", priority, className }: CarouselP
       : "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw";
 
   return (
-    <div className={cn("group relative size-full overflow-hidden", className)}>
-      {images.map((src, i) => (
-        <Image
-          key={src}
-          src={src}
-          alt={alt}
-          fill
-          priority={priority && i === 0}
-          loading={priority && i === 0 ? undefined : "lazy"}
-          sizes={sizes}
-          className={cn(
-            "size-full object-cover transition-opacity duration-200",
-            i === index ? "opacity-100" : "pointer-events-none opacity-0",
-          )}
-        />
-      ))}
+    <div
+      className={cn("group relative size-full overflow-hidden", className)}
+      onPointerEnter={showChrome ? () => reveal(index - 1, index + 1) : undefined}
+    >
+      {images.map((src, i) =>
+        revealed.includes(i) ? (
+          <Image
+            key={src}
+            src={src}
+            alt={alt}
+            fill
+            priority={priority && i === 0}
+            loading={priority && i === 0 ? undefined : "lazy"}
+            sizes={sizes}
+            className={cn(
+              "size-full object-cover transition-opacity duration-200",
+              i === index ? "opacity-100" : "pointer-events-none opacity-0",
+            )}
+          />
+        ) : null,
+      )}
 
       {showChrome && (
         <>

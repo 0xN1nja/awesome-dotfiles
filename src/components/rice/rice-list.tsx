@@ -84,6 +84,7 @@ const RiceList = ({ cards, filterMeta, filterIndex }: RiceListProps) => {
   const [sortMode, setSortMode] = useState<SortMode>("random");
   const [randomOrder, setRandomOrder] = useState(cards);
   const [page, setPage] = useState(1);
+  const [hydrated, setHydrated] = useState(false);
 
   useEffect(() => {
     const restored = readPersistedState();
@@ -115,6 +116,8 @@ const RiceList = ({ cards, filterMeta, filterIndex }: RiceListProps) => {
         randomOrderIds: order.map((c) => c.id),
       });
     }
+
+    setHydrated(true);
     /* eslint-enable react-hooks/set-state-in-effect */
   }, [cards]);
 
@@ -261,7 +264,7 @@ const RiceList = ({ cards, filterMeta, filterIndex }: RiceListProps) => {
       {pageItems.length > 0 ? (
         <ol role="list" className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {pageItems.map((rice, index) => (
-            <RiceCard key={rice.id} rice={rice} priority={index < 3} />
+            <RiceCard key={rice.id} rice={rice} priority={index < 3} showImage={hydrated} />
           ))}
         </ol>
       ) : (
