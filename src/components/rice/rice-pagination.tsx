@@ -34,7 +34,7 @@ const RicePagination = ({ page, totalPages, onPageChange }: RicePaginationProps)
         onClick={() => onPageChange(page - 1)}
       >
         Previous
-        <kbd className="ml-1.5 rounded border px-1 text-[10px] font-normal text-muted-foreground">
+        <kbd className="ml-1.5 hidden rounded border px-1 text-[10px] font-normal text-muted-foreground sm:inline">
           P
         </kbd>
       </Button>
@@ -78,7 +78,7 @@ const RicePagination = ({ page, totalPages, onPageChange }: RicePaginationProps)
         onClick={() => onPageChange(page + 1)}
       >
         Next
-        <kbd className="ml-1.5 rounded border px-1 text-[10px] font-normal text-muted-foreground">
+        <kbd className="ml-1.5 hidden rounded border px-1 text-[10px] font-normal text-muted-foreground sm:inline">
           N
         </kbd>
       </Button>

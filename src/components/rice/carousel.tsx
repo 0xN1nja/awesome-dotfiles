@@ -1,9 +1,10 @@
 "use client";
 
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Maximize } from "lucide-react";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { cn } from "~/lib/utils";
+import CarouselLightbox from "./carousel-lightbox";
 
 interface CarouselProps {
   images: string[];
@@ -11,12 +12,41 @@ interface CarouselProps {
   size?: "card" | "detail";
   priority?: boolean;
   className?: string;
+  enableFullscreen?: boolean;
 }
 
-const Carousel = ({ images, alt, size = "card", priority, className }: CarouselProps) => {
+const Carousel = ({
+  images,
+  alt,
+  size = "card",
+  priority,
+  className,
+  enableFullscreen = false,
+}: CarouselProps) => {
   const [index, setIndex] = useState(0);
   const [revealed, setRevealed] = useState<number[]>([0]);
+  const [fullscreenOpen, setFullscreenOpen] = useState(false);
   const total = images.length;
+
+  useEffect(() => {
+    if (!enableFullscreen || total === 0) return;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.metaKey || event.ctrlKey || event.altKey) return;
+
+      const target = event.target as HTMLElement | null;
+      const tag = target?.tagName;
+      if (tag === "INPUT" || tag === "TEXTAREA" || target?.isContentEditable) return;
+
+      if (event.key === "f") {
+        event.preventDefault();
+        setFullscreenOpen(true);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [enableFullscreen, total]);
 
   if (total === 0) {
     return (
@@ -86,7 +116,7 @@ const Carousel = ({ images, alt, size = "card", priority, className }: CarouselP
             type="button"
             aria-label="Previous image"
             onClick={(event) => goTo(event, index - 1)}
-            className="el-focus-styles absolute left-2 top-1/2 z-10 flex size-7 -translate-y-1/2 items-center justify-center rounded-full bg-black/60 text-white opacity-0 transition-opacity group-hover:opacity-100 focus-visible:opacity-100"
+            className="el-focus-styles absolute left-2 top-1/2 z-10 flex size-7 -translate-y-1/2 items-center justify-center rounded-full bg-black/60 text-white transition-colors hover:bg-black/80"
           >
             <ChevronLeft className="size-4" aria-hidden="true" />
           </button>
@@ -95,7 +125,7 @@ const Carousel = ({ images, alt, size = "card", priority, className }: CarouselP
             type="button"
             aria-label="Next image"
             onClick={(event) => goTo(event, index + 1)}
-            className="el-focus-styles absolute right-2 top-1/2 z-10 flex size-7 -translate-y-1/2 items-center justify-center rounded-full bg-black/60 text-white opacity-0 transition-opacity group-hover:opacity-100 focus-visible:opacity-100"
+            className="el-focus-styles absolute right-2 top-1/2 z-10 flex size-7 -translate-y-1/2 items-center justify-center rounded-full bg-black/60 text-white transition-colors hover:bg-black/80"
           >
             <ChevronRight className="size-4" aria-hidden="true" />
           </button>
@@ -104,6 +134,32 @@ const Carousel = ({ images, alt, size = "card", priority, className }: CarouselP
             {index + 1} / {total}
           </span>
         </>
+      )}
+
+      {enableFullscreen && (
+        <button
+          type="button"
+          aria-label="View fullscreen (F)"
+          onClick={(event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            setFullscreenOpen(true);
+          }}
+          className="el-focus-styles absolute right-2 top-2 z-10 flex size-8 items-center justify-center rounded-full bg-black/60 text-white transition-colors hover:bg-black/80"
+        >
+          <Maximize className="size-4" aria-hidden="true" />
+        </button>
+      )}
+
+      {enableFullscreen && (
+        <CarouselLightbox
+          images={images}
+          alt={alt}
+          index={index}
+          onIndexChange={setIndex}
+          open={fullscreenOpen}
+          onOpenChange={setFullscreenOpen}
+        />
       )}
     </div>
   );

@@ -19,7 +19,7 @@ const Footer = () => {
         )}
       >
         <span>
-          Built by{" "}
+          Built with ❤️ by{" "}
           <a
             href={config.social.github}
             target="_blank"
