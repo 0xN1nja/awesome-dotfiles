@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import AuthorBadge from "~/components/rice/author-badge";
+import BookmarkButton from "~/components/rice/bookmark-button";
 import Carousel from "~/components/rice/carousel";
 import RiceDetailShortcuts from "~/components/rice/rice-detail-shortcuts";
 import ToolsList from "~/components/rice/tools-list";
@@ -66,6 +67,12 @@ export default async function RiceDetailPage({ params }: RiceDetailPageParams) {
           </div>
 
           <div className="flex flex-wrap gap-3">
+            <BookmarkButton
+              riceId={rice.id}
+              title={rice.title}
+              className={buttonVariants({ variant: "outline", size: "icon" })}
+            />
+
             <Link
               href={rice.github_url}
               target="_blank"

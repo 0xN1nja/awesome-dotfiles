@@ -2,6 +2,7 @@ import Link from "next/link";
 import { resolveRiceImages, type RiceCard as RiceCardType } from "~/lib/rice-shared";
 import { formatDate } from "~/lib/utils";
 import AuthorBadge from "./author-badge";
+import BookmarkButton from "./bookmark-button";
 import Carousel from "./carousel";
 import Chips from "./chips";
 import ToolsList from "./tools-list";
@@ -33,15 +34,23 @@ const RiceCard = ({ rice, priority = false, showImage = true }: RiceCardProps) =
         </div>
 
         <div className="space-y-1.5">
-          <Link
-            href={href}
-            prefetch={false}
-            className="el-focus-styles group inline-block rounded-sm"
-          >
-            <h3 className="line-clamp-2 font-sans text-base leading-snug transition-colors group-hover:text-ring">
-              {rice.title}
-            </h3>
-          </Link>
+          <div className="flex items-start justify-between gap-2">
+            <Link
+              href={href}
+              prefetch={false}
+              className="el-focus-styles group inline-block rounded-sm"
+            >
+              <h3 className="line-clamp-2 font-sans text-base leading-snug transition-colors group-hover:text-ring">
+                {rice.title}
+              </h3>
+            </Link>
+
+            <BookmarkButton
+              riceId={rice.id}
+              title={rice.title}
+              className="flex size-7 shrink-0 items-center justify-center rounded-md border border-input text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+            />
+          </div>
 
           <div className="flex flex-wrap items-center gap-x-3 gap-y-1 font-sans text-xs text-muted-foreground">
             <time dateTime={new Date(rice.created_utc * 1000).toISOString()}>

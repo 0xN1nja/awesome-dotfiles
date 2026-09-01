@@ -16,7 +16,6 @@ const RiceDetailShortcuts = ({ githubUrl, redditUrl }: RiceDetailShortcutsProps)
       const tag = target?.tagName;
       if (tag === "INPUT" || tag === "TEXTAREA" || target?.isContentEditable) return;
 
-      // Don't hijack d/r while the fullscreen gallery is open.
       if (document.querySelector('[role="dialog"]')) return;
 
       if (event.key === "d") {
