@@ -1,0 +1,17 @@
+[
+  {
+    "title": "[Hyprland] First time actually ricing my Arch. And finally made myself a custom theme switcher which I like too! ",
+    "author": "EasyCanadianGamer",
+    "date": "2026-08-12",
+    "preview_image": "https://github.com/EasyCanadianGamer/CG-Hyprland-Dotfiles/blob/main/assets/dotfiles.png?raw=true",
+    "gallery_images": ["https://raw.githubusercontent.com/EasyCanadianGamer/CG-Hyprland-Dotfiles/refs/heads/main/assets/dotfiles.png",
+    "https://github.com/EasyCanadianGamer/CG-Hyprland-Dotfiles/blob/main/assets/Arch.png?raw=true",
+    "https://github.com/EasyCanadianGamer/CG-Hyprland-Dotfiles/blob/main/assets/Miku.png?raw=true",
+    "https://github.com/EasyCanadianGamer/CG-Hyprland-Dotfiles/blob/main/assets/Vash.png?raw=true",
+    "https://github.com/EasyCanadianGamer/CG-Hyprland-Dotfiles/blob/main/assets/change-wallpapers.png?raw=true"],
+    "github_url": "https://github.com/EasyCanadianGamer/CG-Hyprland-Dotfiles",
+    "wm": "hyprland",
+    "distro": "arch linux",
+    "utils_used": ["Waybar", "Kitty", "Rofi", "Neovim","cava", "wlogout", "termsonic","hyprpolkitagent"]
+  }
+]
