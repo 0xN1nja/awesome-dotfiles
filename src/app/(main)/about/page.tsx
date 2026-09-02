@@ -10,7 +10,7 @@ const CONTRIBUTING_URL = "https://github.com/0xN1nja/awesome-dotfiles/blob/maste
 
 const AboutPage = () => {
   return (
-    <div className="!mt-8 mx-auto max-w-228 space-y-8">
+    <div className="!mt-8 space-y-8">
       <h1 className="font-serif text-2xl">About</h1>
 
       <section className="space-y-2">

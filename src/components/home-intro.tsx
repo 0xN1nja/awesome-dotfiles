@@ -2,12 +2,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { typo } from "./ui/typograpghy";
 
-const introImage = "/arch_guy.jpg";
+const introImage = "/distro_hopper.jpg";
 
 const HomeIntro = () => {
   return (
-    <section className="grid gap-8 sm:gap-4 md:grid-cols-3" aria-label="About">
-      <div className="order-2 space-y-3 sm:order-1 md:col-span-2">
+    <section className="grid gap-8 pt-6 sm:gap-4 md:grid-cols-[5fr_5fr]" aria-label="About">
+      <div className="order-2 space-y-3 sm:order-1">
         <h1 className="font-serif text-2xl sm:text-3xl">There&apos;s no place like ~/.config</h1>
 
         <p className={typo({ variant: "paragraph", font: "sans" })}>
@@ -54,13 +54,13 @@ const HomeIntro = () => {
         </p>
       </div>
 
-      <div className="relative order-1 block aspect-square rotate-3 sm:order-2 sm:hidden md:block md:self-center">
+      <div className="relative order-1 block aspect-890/500 rotate-3 sm:order-2 sm:hidden md:block md:self-center">
         <Image
           alt="awesome-dotfiles"
           src={introImage}
           fill
           sizes="(max-width: 768px) 100vw, 300px"
-          className="size-full rounded-md object-cover shadow-md"
+          className="size-full rounded-md object-contain shadow-md"
           priority
         />
       </div>

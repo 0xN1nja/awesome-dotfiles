@@ -15,7 +15,7 @@ const HomePage = () => {
   const gallery = shuffle(getAllCards()).slice(0, 6);
 
   return (
-    <main className="!mt-8 mx-auto max-w-228 space-y-14">
+    <main className="!mt-8 space-y-14">
       <HomeIntro />
 
       <section aria-label="rices" className="space-y-6">

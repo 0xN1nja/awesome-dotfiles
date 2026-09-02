@@ -1,23 +1,9 @@
-"use client";
-
-import { usePathname } from "next/navigation";
 import config from "~/config";
-import { cn } from "~/lib/utils";
-
-const COMPACT_ROUTES = ["/", "/about"];
 
 const Footer = () => {
-  const pathname = usePathname();
-  const isCompact = COMPACT_ROUTES.includes(pathname);
-
   return (
     <footer className="!mt-auto flex flex-col items-center justify-center py-4">
-      <div
-        className={cn(
-          "flex w-full flex-wrap items-center justify-center gap-2 text-center sm:justify-between",
-          isCompact && "mx-auto max-w-228",
-        )}
-      >
+      <div className="flex w-full flex-wrap items-center justify-center gap-2 text-center sm:justify-between">
         <span>
           Built with ❤️ by{" "}
           <a
