@@ -210,6 +210,10 @@ const RiceList = ({ cards, filterMeta, filterIndex }: RiceListProps) => {
   const handlePageChange = (newPage: number) => {
     setPage(newPage);
     persistPartial({ page: newPage });
+    window.scroll({
+      top:160,
+      // behavior:"smooth"
+    })
   };
 
   useEffect(() => {
