@@ -1,0 +1,11 @@
+[
+  {
+    "title": "Goonix — a Hyprland rice with a custom Quickshell launcher",
+    "author": "debuxxed",
+    "date": "2026-11-25",
+    "preview_image": "https://github.com/user-attachments/assets/b13d605c-34fd-49bd-a088-2d9c2339e3b1",
+    "github_url": "https://github.com/debuxxed/goonix-dots",
+    "wm": "hyprland",
+    "utils_used": ["Quickshell", "Hyprpaper"]
+  }
+]
